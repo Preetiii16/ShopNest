@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Order Detail - ShopNest Admin</title>
+  <link rel="stylesheet" href="/css/main.css">
+  <link rel="stylesheet" href="/css/navbar.css">
+  <link rel="stylesheet" href="/css/admin.css">
+  <link rel="stylesheet" href="/css/toast.css">
+</head>
+<body>
+
+  <!-- Top Navbar -->
+  <header class="navbar">
+    <div class="container navbar-container">
+      <a href="/admin-dashboard.html" class="navbar-brand">
+        <svg viewBox="0 0 24 24"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg>
+        Shop<span>Nest</span> <small style="font-size: 0.75rem; background: var(--primary-100); color: var(--primary-700); padding: 0.15rem 0.5rem; border-radius: var(--radius-full);">ADMIN</small>
+      </a>
+
+      <div class="navbar-actions">
+        <a href="/index.html" class="btn btn-outline btn-sm" target="_blank">🌐 View Storefront</a>
+        <div id="user-menu-container"></div>
+      </div>
+    </div>
+  </header>
+
+  <div class="admin-wrapper">
+    <!-- Sidebar Navigation -->
+    <aside class="admin-sidebar">
+      <div class="admin-sidebar-title">Admin Management</div>
+      <ul class="admin-nav">
+        <li class="admin-nav-item"><a href="/admin-dashboard.html">📊 Dashboard</a></li>
+        <li class="admin-nav-item"><a href="/admin-products.html">🛍️ Products</a></li>
+        <li class="admin-nav-item"><a href="/admin-product-form.html">➕ Add Product</a></li>
+        <li class="admin-nav-item"><a href="/admin-categories.html">🏷️ Categories</a></li>
+        <li class="admin-nav-item"><a href="/admin-users.html">👥 Customers</a></li>
+        <li class="admin-nav-item"><a href="/admin-orders.html" class="active">📦 Orders</a></li>
+      </ul>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="admin-content">
+      <div style="margin-bottom: 1.5rem;">
+        <a href="/admin-orders.html" class="btn btn-secondary btn-sm">&larr; Back to Orders List</a>
+      </div>
+
+      <div id="admin-order-detail-container">
+        <div class="spinner"></div>
+      </div>
+    </main>
+  </div>
+
+  <script src="/js/config.js"></script>
+  <script src="/js/toast.js"></script>
+  <script src="/js/auth.js"></script>
+  <script src="/js/api.js"></script>
+  <script src="/js/main.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      if (!Auth.requireAdmin()) return;
+
+      const urlParams = new URLSearchParams(window.location.search);
+      const orderId = urlParams.get('id');
+
+      if (!orderId) {
+        window.location.href = '/admin-orders.html';
+        return;
+      }
+
+      loadAdminOrderDetail(orderId);
+    });
+
+    async function loadAdminOrderDetail(id) {
+      const container = document.getElementById('admin-order-detail-container');
+      try {
+        const data = await apiFetch(`/orders/${id}`);
+        if (data.success && data.order) {
+          renderAdminOrderDetail(data.order);
+        } else {
+          container.innerHTML = '<div class="empty-state"><h3>Order Not Found</h3></div>';
+        }
+      } catch (error) {
+        container.innerHTML = `<div class="empty-state"><h3>Error</h3><p>${error.message}</p></div>`;
+      }
+    }
+
+    function renderAdminOrderDetail(order) {
+      const container = document.getElementById('admin-order-detail-container');
+      const formattedDate = new Date(order.created_at).toLocaleDateString(undefined, { 
+        year: 'numeric', month: 'long', day: 'numeric', hour: '2-digit', minute: '2-digit' 
+      });
+
+      const statuses = ['Pending', 'Confirmed', 'Shipped', 'Delivered', 'Cancelled'];
+
+      container.innerHTML = `
+        <div style="background-color: var(--white); border-radius: var(--radius-lg); border: 1px solid var(--gray-200); box-shadow: var(--shadow-sm); padding: 2rem;">
+          <div style="display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 1rem; border-bottom: 1px solid var(--gray-200); padding-bottom: 1.5rem; margin-bottom: 1.5rem;">
+            <div>
+              <h2 style="font-size: 1.6rem;">Order #ORD-${order.id} Details</h2>
+              <div style="font-size: 0.875rem; color: var(--gray-500); margin-top: 0.25rem;">Placed on ${formattedDate}</div>
+            </div>
+            
+            <div style="display: flex; align-items: center; gap: 1rem; background-color: var(--gray-50); padding: 0.6rem 1rem; border-radius: var(--radius-md);">
+              <label style="font-weight: 700; font-size: 0.9rem; margin: 0;">Order Status:</label>
+              <select class="form-select" style="width: 150px;" onchange="changeStatusFromDetail(${order.id}, this.value)">
+                ${statuses.map(st => `
+                  <option value="${st}" ${order.status === st ? 'selected' : ''}>${st}</option>
+                `).join('')}
+              </select>
+            </div>
+          </div>
+
+          <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1.5rem; margin-bottom: 2rem;">
+            <div style="background-color: var(--gray-50); padding: 1.25rem; border-radius: var(--radius-md);">
+              <h4 style="margin-bottom: 0.5rem; color: var(--dark-800);">Customer Details</h4>
+              <p style="font-weight: 700;">${order.customer_name}</p>
+              <p style="color: var(--gray-600); font-size: 0.9rem;">Email: ${order.customer_email}</p>
+              <p style="color: var(--gray-600); font-size: 0.9rem;">Phone: ${order.phone}</p>
+            </div>
+
+            <div style="background-color: var(--gray-50); padding: 1.25rem; border-radius: var(--radius-md);">
+              <h4 style="margin-bottom: 0.5rem; color: var(--dark-800);">Shipping Address</h4>
+              <p style="color: var(--gray-700); font-size: 0.95rem; line-height: 1.6;">${order.address}</p>
+            </div>
+          </div>
+
+          <h3 style="font-size: 1.2rem; margin-bottom: 1rem;">Purchased Items</h3>
+          <div class="table-responsive" style="margin-bottom: 1.5rem;">
+            <table class="data-table">
+              <thead>
+                <tr>
+                  <th>Product</th>
+                  <th>Price</th>
+                  <th>Quantity</th>
+                  <th>Subtotal</th>
+                </tr>
+              </thead>
+              <tbody>
+                ${order.items.map(item => `
+                  <tr>
+                    <td>
+                      <div style="display: flex; align-items: center; gap: 1rem;">
+                        <img src="${getImageUrl(item.image)}" alt="${item.product_name}" style="width: 44px; height: 44px; object-fit: cover; border-radius: var(--radius-sm);" onerror="this.src='/uploads/products/default-product.jpg'">
+                        <div>
+                          <div style="font-weight: 700;">${item.product_name}</div>
+                          <div style="font-size: 0.8rem; color: var(--gray-500);">${item.category_name}</div>
+                        </div>
+                      </div>
+                    </td>
+                    <td>$${parseFloat(item.price).toFixed(2)}</td>
+                    <td style="font-weight: 700;">${item.quantity}</td>
+                    <td style="font-weight: 700; color: var(--primary-600);">$${parseFloat(item.subtotal).toFixed(2)}</td>
+                  </tr>
+                `).join('')}
+              </tbody>
+            </table>
+          </div>
+
+          <div style="display: flex; justify-content: flex-end;">
+            <div style="width: 100%; max-width: 300px; background-color: var(--gray-50); padding: 1.25rem; border-radius: var(--radius-md);">
+              <div style="display: flex; justify-content: space-between; align-items: center;">
+                <span style="font-weight: 700;">Grand Total:</span>
+                <span style="font-family: var(--font-display); font-size: 1.6rem; font-weight: 800; color: var(--primary-600);">$${parseFloat(order.total_amount).toFixed(2)}</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      `;
+    }
+
+    async function changeStatusFromDetail(id, newStatus) {
+      try {
+        const data = await apiFetch(`/admin/orders/${id}/status`, {
+          method: 'PUT',
+          body: { status: newStatus }
+        });
+        if (data.success) {
+          showToast(data.message, 'success');
+        }
+      } catch (error) {
+        showToast(error.message, 'error');
+      }
+    }
+  </script>
+</body>
+</html>

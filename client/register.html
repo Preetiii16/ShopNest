@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Customer Registration - ShopNest</title>
+  <link rel="stylesheet" href="/css/main.css">
+  <link rel="stylesheet" href="/css/navbar.css">
+  <link rel="stylesheet" href="/css/toast.css">
+</head>
+<body style="background-color: var(--gray-100);">
+
+  <header class="navbar">
+    <div class="container navbar-container">
+      <a href="/index.html" class="navbar-brand">
+        <svg viewBox="0 0 24 24"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg>
+        Shop<span>Nest</span>
+      </a>
+      <div id="user-menu-container"></div>
+    </div>
+  </header>
+
+  <main class="section" style="display: flex; align-items: center; justify-content: center; min-height: calc(100vh - 160px);">
+    <div style="width: 100%; max-width: 520px; background-color: var(--white); border-radius: var(--radius-xl); padding: 2.5rem; border: 1px solid var(--gray-200); box-shadow: var(--shadow-xl);">
+      <div class="text-center" style="margin-bottom: 2rem;">
+        <h2 style="font-size: 1.75rem; margin-bottom: 0.5rem;">Create Your Account</h2>
+        <p class="text-muted">Register to start shopping and managing your orders</p>
+      </div>
+
+      <form id="register-form">
+        <div class="form-group">
+          <label class="form-label" for="reg-name">Full Name *</label>
+          <input type="text" id="reg-name" class="form-control" placeholder="John Doe" required>
+        </div>
+
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
+          <div class="form-group">
+            <label class="form-label" for="reg-email">Email Address *</label>
+            <input type="email" id="reg-email" class="form-control" placeholder="john@example.com" required>
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="reg-phone">Phone Number</label>
+            <input type="tel" id="reg-phone" class="form-control" placeholder="+1 555-0144">
+          </div>
+        </div>
+
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
+          <div class="form-group">
+            <label class="form-label" for="reg-password">Password *</label>
+            <input type="password" id="reg-password" class="form-control" placeholder="Min 6 characters" required>
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="reg-confirm-password">Confirm Password *</label>
+            <input type="password" id="reg-confirm-password" class="form-control" placeholder="Re-enter password" required>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label" for="reg-address">Delivery Address</label>
+          <textarea id="reg-address" class="form-control" placeholder="Street address, City, State, ZIP Code" rows="2"></textarea>
+        </div>
+
+        <button type="submit" id="reg-submit-btn" class="btn btn-primary btn-lg btn-block" style="margin-top: 1.5rem;">
+          Create Account
+        </button>
+      </form>
+
+      <div style="margin-top: 1.5rem; text-align: center; font-size: 0.9rem; color: var(--gray-600);">
+        Already have an account? <a href="/login.html" style="color: var(--primary-600); font-weight: 700;">Sign In</a>
+      </div>
+    </div>
+  </main>
+
+  <script src="/js/config.js"></script>
+  <script src="/js/toast.js"></script>
+  <script src="/js/auth.js"></script>
+  <script src="/js/api.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      document.getElementById('register-form').addEventListener('submit', async (e) => {
+        e.preventDefault();
+
+        const name = document.getElementById('reg-name').value.trim();
+        const email = document.getElementById('reg-email').value.trim();
+        const phone = document.getElementById('reg-phone').value.trim();
+        const password = document.getElementById('reg-password').value;
+        const confirmPassword = document.getElementById('reg-confirm-password').value;
+        const address = document.getElementById('reg-address').value.trim();
+
+        if (password.length < 6) {
+          showToast('Password must be at least 6 characters long.', 'error');
+          return;
+        }
+
+        if (password !== confirmPassword) {
+          showToast('Passwords do not match.', 'error');
+          return;
+        }
+
+        const btn = document.getElementById('reg-submit-btn');
+        btn.disabled = true;
+        btn.textContent = 'Registering Account...';
+
+        try {
+          const data = await apiFetch('/auth/register', {
+            method: 'POST',
+            body: { name, email, phone, password, confirmPassword, address }
+          });
+
+          if (data.success) {
+            showToast(data.message, 'success');
+            Auth.setToken(data.token);
+            Auth.setUser(data.user);
+
+            setTimeout(() => {
+              window.location.href = '/index.html';
+            }, 1000);
+          }
+        } catch (error) {
+          showToast(error.message, 'error');
+          btn.disabled = false;
+          btn.textContent = 'Create Account';
+        }
+      });
+    });
+  </script>
+</body>
+</html>

@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ShopNest - Premium Online Shopping & Order Management</title>
+  <meta name="description" content="Explore top-quality products across electronics, fashion, home essentials, and more on ShopNest. Fast delivery and best prices guaranteed.">
+  <link rel="stylesheet" href="/css/main.css">
+  <link rel="stylesheet" href="/css/navbar.css">
+  <link rel="stylesheet" href="/css/cards.css">
+  <link rel="stylesheet" href="/css/toast.css">
+</head>
+<body>
+
+  <!-- Navigation Bar -->
+  <header class="navbar">
+    <div class="container navbar-container">
+      <a href="/index.html" class="navbar-brand">
+        <svg viewBox="0 0 24 24"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg>
+        Shop<span>Nest</span>
+      </a>
+
+      <nav>
+        <ul class="navbar-nav" id="navbarNav">
+          <li><a href="/index.html" class="nav-link active">Home</a></li>
+          <li><a href="/shop.html" class="nav-link">Shop</a></li>
+          <li><a href="/orders.html" class="nav-link">My Orders</a></li>
+        </ul>
+      </nav>
+
+      <div class="navbar-actions">
+        <a href="/cart.html" class="cart-icon-btn" id="cartBtn" title="Shopping Cart">
+          🛒
+          <span class="cart-badge" id="cart-badge">0</span>
+        </a>
+        <div id="user-menu-container"></div>
+        <button class="mobile-toggle" id="mobileNavToggle">☰</button>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <!-- Hero Section -->
+    <section style="background: linear-gradient(135deg, var(--dark-900) 0%, #1e1b4b 100%); color: var(--white); padding: 5rem 0; position: relative; overflow: hidden;">
+      <div class="container" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 3rem; align-items: center;">
+        <div>
+          <span class="badge" style="background-color: rgba(99, 102, 241, 0.2); color: var(--primary-100); margin-bottom: 1rem; border: 1px solid var(--primary-500);">
+            ✨ Summer Collection 2026
+          </span>
+          <h1 style="font-size: 3rem; color: var(--white); margin-bottom: 1.25rem; line-height: 1.15;">
+            Discover Premium Products for Everyday Life
+          </h1>
+          <p style="color: var(--gray-300); font-size: 1.1rem; margin-bottom: 2rem; max-width: 540px;">
+            Shop the latest trends in Electronics, Fashion, Home Living, and Beauty with seamless order tracking and fast Cash on Delivery checkout.
+          </p>
+          <div style="display: flex; gap: 1rem; flex-wrap: wrap;">
+            <a href="/shop.html" class="btn btn-primary btn-lg">Explore Shop &rarr;</a>
+            <a href="#featured" class="btn btn-secondary btn-lg" style="background-color: rgba(255,255,255,0.1); color: var(--white); border-color: rgba(255,255,255,0.2);">
+              Featured Deals
+            </a>
+          </div>
+        </div>
+
+        <div style="text-align: center;">
+          <div style="background: rgba(255, 255, 255, 0.05); backdrop-filter: blur(12px); border-radius: var(--radius-xl); padding: 2rem; border: 1px solid rgba(255,255,255,0.1); display: inline-block;">
+            <img src="/uploads/products/headphones.jpg" alt="Featured Hero Item" style="max-height: 320px; border-radius: var(--radius-lg); margin: 0 auto;" onerror="this.src='https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=500&auto=format&fit=crop&q=80'">
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Categories Section -->
+    <section class="section">
+      <div class="container">
+        <div class="section-header text-center">
+          <h2 class="section-title">Shop by Category</h2>
+          <p class="section-subtitle">Browse through our wide variety of curated categories</p>
+        </div>
+        <div class="products-grid" id="categories-container" style="grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));">
+          <div class="spinner"></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Featured Products Section -->
+    <section class="section" id="featured" style="background-color: var(--white);">
+      <div class="container">
+        <div class="section-header" style="display: flex; justify-content: space-between; align-items: flex-end;">
+          <div>
+            <h2 class="section-title">Featured Products</h2>
+            <p class="section-subtitle">Handpicked top items updated daily</p>
+          </div>
+          <a href="/shop.html" class="btn btn-outline">View All Products &rarr;</a>
+        </div>
+        <div class="products-grid" id="featured-products-container">
+          <div class="spinner"></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Call to Action Banner -->
+    <section class="section">
+      <div class="container">
+        <div style="background: linear-gradient(135deg, var(--primary-600) 0%, var(--primary-800) 100%); border-radius: var(--radius-xl); padding: 4rem 2rem; color: var(--white); text-align: center; box-shadow: var(--shadow-xl);">
+          <h2 style="color: var(--white); font-size: 2.25rem; margin-bottom: 1rem;">Ready to Upgrade Your Shopping Experience?</h2>
+          <p style="font-size: 1.1rem; color: var(--primary-100); max-width: 600px; margin: 0 auto 2rem;">
+            Join thousands of satisfied customers. Fast delivery, easy returns, and dedicated support.
+          </p>
+          <a href="/register.html" class="btn btn-secondary btn-lg" style="background-color: var(--white); color: var(--primary-700);">Create Free Account</a>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- Footer -->
+  <footer>
+    <div class="container">
+      <div class="footer-grid">
+        <div class="footer-brand">
+          <h3>ShopNest</h3>
+          <p>Your one-stop destination for quality shopping and reliable order fulfillment.</p>
+        </div>
+        <div class="footer-links">
+          <h4>Quick Links</h4>
+          <ul>
+            <li><a href="/index.html">Home</a></li>
+            <li><a href="/shop.html">Products Catalog</a></li>
+            <li><a href="/cart.html">Shopping Cart</a></li>
+            <li><a href="/orders.html">Track Order</a></li>
+          </ul>
+        </div>
+        <div class="footer-links">
+          <h4>Customer Care</h4>
+          <ul>
+            <li><a href="/profile.html">My Account</a></li>
+            <li><a href="/login.html">Customer Login</a></li>
+            <li><a href="/register.html">Register Account</a></li>
+            <li><a href="/admin-login.html">Admin Portal</a></li>
+          </ul>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        &copy; 2026 ShopNest E-Commerce Platform. Built with Vanilla HTML, CSS, JS, Express & MySQL.
+      </div>
+    </div>
+  </footer>
+
+  <script src="/js/config.js"></script>
+  <script src="/js/toast.js"></script>
+  <script src="/js/auth.js"></script>
+  <script src="/js/api.js"></script>
+  <script src="/js/main.js"></script>
+  <script src="/js/home.js"></script>
+</body>
+</html>

@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Manage Categories - ShopNest Admin</title>
+  <link rel="stylesheet" href="/css/main.css">
+  <link rel="stylesheet" href="/css/navbar.css">
+  <link rel="stylesheet" href="/css/admin.css">
+  <link rel="stylesheet" href="/css/toast.css">
+</head>
+<body>
+
+  <!-- Top Navbar -->
+  <header class="navbar">
+    <div class="container navbar-container">
+      <a href="/admin-dashboard.html" class="navbar-brand">
+        <svg viewBox="0 0 24 24"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg>
+        Shop<span>Nest</span> <small style="font-size: 0.75rem; background: var(--primary-100); color: var(--primary-700); padding: 0.15rem 0.5rem; border-radius: var(--radius-full);">ADMIN</small>
+      </a>
+
+      <div class="navbar-actions">
+        <a href="/index.html" class="btn btn-outline btn-sm" target="_blank">🌐 View Storefront</a>
+        <div id="user-menu-container"></div>
+      </div>
+    </div>
+  </header>
+
+  <div class="admin-wrapper">
+    <!-- Sidebar Navigation -->
+    <aside class="admin-sidebar">
+      <div class="admin-sidebar-title">Admin Management</div>
+      <ul class="admin-nav">
+        <li class="admin-nav-item"><a href="/admin-dashboard.html">📊 Dashboard</a></li>
+        <li class="admin-nav-item"><a href="/admin-products.html">🛍️ Products</a></li>
+        <li class="admin-nav-item"><a href="/admin-product-form.html">➕ Add Product</a></li>
+        <li class="admin-nav-item"><a href="/admin-categories.html" class="active">🏷️ Categories</a></li>
+        <li class="admin-nav-item"><a href="/admin-users.html">👥 Customers</a></li>
+        <li class="admin-nav-item"><a href="/admin-orders.html">📦 Orders</a></li>
+      </ul>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="admin-content">
+      <div class="admin-header">
+        <div>
+          <h2>Product Categories</h2>
+          <p class="text-muted">Manage product classification categories</p>
+        </div>
+      </div>
+
+      <div style="display: grid; grid-template-columns: 1fr 340px; gap: 2rem; align-items: start;">
+        <!-- Categories Table -->
+        <div class="table-card">
+          <div class="table-responsive" id="categories-table-container">
+            <div class="spinner"></div>
+          </div>
+        </div>
+
+        <!-- Category Add / Edit Form -->
+        <div style="background-color: var(--white); padding: 1.75rem; border-radius: var(--radius-lg); border: 1px solid var(--gray-200); box-shadow: var(--shadow-sm);">
+          <h3 style="font-size: 1.2rem; margin-bottom: 1.25rem; border-bottom: 1px solid var(--gray-200); padding-bottom: 0.75rem;">
+            🏷️ Add / Edit Category
+          </h3>
+
+          <form id="category-form">
+            <div class="form-group">
+              <label class="form-label" for="category-name-input">Category Name *</label>
+              <input type="text" id="category-name-input" class="form-control" placeholder="e.g. Home Appliances" required>
+            </div>
+
+            <div style="display: flex; gap: 0.5rem; margin-top: 1.25rem;">
+              <button type="submit" id="cat-submit-btn" class="btn btn-primary btn-block">
+                Add Category
+              </button>
+              <button type="button" id="cat-cancel-btn" class="btn btn-secondary" onclick="resetCategoryForm()" style="display: none;">
+                Cancel
+              </button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </main>
+  </div>
+
+  <script src="/js/config.js"></script>
+  <script src="/js/toast.js"></script>
+  <script src="/js/auth.js"></script>
+  <script src="/js/api.js"></script>
+  <script src="/js/main.js"></script>
+  <script src="/js/admin-categories.js"></script>
+</body>
+</html>

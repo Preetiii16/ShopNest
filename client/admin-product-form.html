@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Product Form - ShopNest Admin</title>
+  <link rel="stylesheet" href="/css/main.css">
+  <link rel="stylesheet" href="/css/navbar.css">
+  <link rel="stylesheet" href="/css/admin.css">
+  <link rel="stylesheet" href="/css/toast.css">
+</head>
+<body>
+
+  <!-- Top Navbar -->
+  <header class="navbar">
+    <div class="container navbar-container">
+      <a href="/admin-dashboard.html" class="navbar-brand">
+        <svg viewBox="0 0 24 24"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg>
+        Shop<span>Nest</span> <small style="font-size: 0.75rem; background: var(--primary-100); color: var(--primary-700); padding: 0.15rem 0.5rem; border-radius: var(--radius-full);">ADMIN</small>
+      </a>
+
+      <div class="navbar-actions">
+        <a href="/index.html" class="btn btn-outline btn-sm" target="_blank">🌐 View Storefront</a>
+        <div id="user-menu-container"></div>
+      </div>
+    </div>
+  </header>
+
+  <div class="admin-wrapper">
+    <!-- Sidebar Navigation -->
+    <aside class="admin-sidebar">
+      <div class="admin-sidebar-title">Admin Management</div>
+      <ul class="admin-nav">
+        <li class="admin-nav-item"><a href="/admin-dashboard.html">📊 Dashboard</a></li>
+        <li class="admin-nav-item"><a href="/admin-products.html">🛍️ Products</a></li>
+        <li class="admin-nav-item"><a href="/admin-product-form.html" class="active">➕ Add Product</a></li>
+        <li class="admin-nav-item"><a href="/admin-categories.html">🏷️ Categories</a></li>
+        <li class="admin-nav-item"><a href="/admin-users.html">👥 Customers</a></li>
+        <li class="admin-nav-item"><a href="/admin-orders.html">📦 Orders</a></li>
+      </ul>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="admin-content">
+      <div style="margin-bottom: 1.5rem;">
+        <a href="/admin-products.html" class="btn btn-secondary btn-sm">&larr; Back to Products</a>
+      </div>
+
+      <div style="max-width: 720px; background-color: var(--white); border-radius: var(--radius-lg); border: 1px solid var(--gray-200); box-shadow: var(--shadow-sm); padding: 2.5rem;">
+        <h2 id="form-page-title" style="margin-bottom: 1.5rem; border-bottom: 1px solid var(--gray-200); padding-bottom: 0.75rem;">
+          Add New Product
+        </h2>
+
+        <form id="product-form" enctype="multipart/form-data">
+          <div class="form-group">
+            <label class="form-label" for="product-name">Product Name *</label>
+            <input type="text" id="product-name" class="form-control" placeholder="e.g. Wireless Noise-Canceling Headphones" required>
+          </div>
+
+          <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 1rem;">
+            <div class="form-group">
+              <label class="form-label" for="product-category">Category *</label>
+              <select id="product-category" class="form-select" required>
+                <option value="">Select Category</option>
+              </select>
+            </div>
+
+            <div class="form-group">
+              <label class="form-label" for="product-price">Price ($) *</label>
+              <input type="number" id="product-price" class="form-control" placeholder="99.99" step="0.01" min="0" required>
+            </div>
+
+            <div class="form-group">
+              <label class="form-label" for="product-stock">Stock Quantity *</label>
+              <input type="number" id="product-stock" class="form-control" placeholder="25" min="0" required>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label" for="product-description">Description</label>
+            <textarea id="product-description" class="form-control" rows="4" placeholder="Detailed product specifications and features..."></textarea>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label" for="product-image">Product Image (JPEG, PNG, WEBP)</label>
+            <input type="file" id="product-image" class="form-control" accept="image/jpeg,image/png,image/webp">
+            
+            <div style="margin-top: 1rem;">
+              <img id="image-preview" src="#" alt="Preview" style="display: none; max-height: 180px; border-radius: var(--radius-md); border: 1px solid var(--gray-300);">
+            </div>
+          </div>
+
+          <div style="margin-top: 2rem; display: flex; gap: 1rem;">
+            <button type="submit" id="submit-btn" class="btn btn-primary btn-lg">
+              Create Product
+            </button>
+            <a href="/admin-products.html" class="btn btn-secondary btn-lg">Cancel</a>
+          </div>
+        </form>
+      </div>
+    </main>
+  </div>
+
+  <script src="/js/config.js"></script>
+  <script src="/js/toast.js"></script>
+  <script src="/js/auth.js"></script>
+  <script src="/js/api.js"></script>
+  <script src="/js/main.js"></script>
+  <script src="/js/admin-product-form.js"></script>
+</body>
+</html>
